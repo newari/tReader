@@ -6,30 +6,9 @@ $main->show_msg();
 $dbh=new db("triaasco_omr");
 if(isset($_GET['batch'])){
 	$batch=$_GET['batch'];
-	if($batch=="all"){
-		if(isset($_GET['start_from'])){
-			$start_from=$_GET['start_from'];
-			if($start_from=="all"){
-				$limit="none";
-			}else{
-				$limit="50";
-			}
-		}else{
-			$limit='50';
-			$start_from=0;
-		}
-		$dbh->select("students", "id, roll_no, fname, lname, img_src, batch, mobile, mobile_p", "id > '$start_from'", "id ASC", "$limit");
-		if($dbh->sel_count_row==1){
-				$id=$dbh->select_res['id'];
-				$test_participated=0;
-				if(file_exists('./images/students/'.$dbh->select_res['img_src'])){
-					$img_src='images/students/'.$dbh->select_res['img_src'];
-				}else{
-					$img_src="images/default-pic.jpg";
-				}
-			$student_list='<div class="row-fluid">
+	$student_list='<div class="row-fluid">
 					<div class="span6 alignL"><a href="./students.php">Back</a></div>
-			<div class="span6 alignR"><a href="./add-student.php">Add new student</a></div>
+			<div class="span6 alignR"><a href="./add-student.php">Add new student</a> | <a href="./send-rand-sms.php?batch='.$_GET['batch'].'">Send SMS</a></div>
 					<div class="span12">
 						<table class="table table-stripted">
 							<thead>
@@ -45,7 +24,30 @@ if(isset($_GET['batch'])){
 									<th>More?</th>
 								</tr>
 							</thead>
-							<tbody><tr>
+							<tbody>';
+	if($batch=="all"){
+		if(isset($_GET['start_from'])){
+			$start_from=$_GET['start_from'];
+			if($start_from=="all"){
+				$limit="none";
+			}else{
+				$limit="50";
+			}
+		}else{
+			$limit='50';
+			$start_from=0;
+		}
+		
+		$dbh->select("students", "id, roll_no, fname, lname, img_src, batch, mobile, mobile_p", "id > '$start_from'", "id ASC", "$limit");
+		if($dbh->sel_count_row==1){
+				$id=$dbh->select_res['id'];
+				$test_participated=0;
+				if(file_exists('./images/students/'.$dbh->select_res['img_src'])){
+					$img_src='images/students/'.$dbh->select_res['img_src'];
+				}else{
+					$img_src="images/default-pic.jpg";
+				}
+			$student_list.='<tr>
 									<td>1.</td>
 									<td>'.ucfirst($dbh->select_res['fname']).' '.ucfirst($dbh->select_res['lname']).'</td>
 									<td>'.$dbh->select_res['roll_no'].'</td>
@@ -60,25 +62,6 @@ if(isset($_GET['batch'])){
 					</div>
 				</div>';
 		}else if($dbh->sel_count_row>1){
-			$student_list='<div class="row-fluid">
-					<div class="span6 alignL"><a href="./students.php">Back</a></div>
-					<div class="span6 alignR"><a href="./add-student.php">Add new student</a></div>
-					<div class="span12">
-						<table class="table table-stripped">
-							<thead>
-								<tr>
-									<th>#</th>
-									<th>Student Name</th>
-									<th>Roll NO.</th>
-									<th>Image</th>
-									<th>Batch</th>
-									<th>Mobile</th>
-									<th>Mobile-P</th>
-									<th>Tests</th>
-									<th>More</th>
-								</tr>
-							</thead>
-							<tbody>';
 			$i=0;
 			foreach($dbh->select_res as $student){
 				$i+=1;
@@ -130,25 +113,7 @@ if(isset($_GET['batch'])){
 				}else{
 					$img_src="images/default-pic.jpg";
 				}
-			$student_list='<div class="row-fluid">
-					<div class="span6 alignL"><a href="./students.php">Back</a></div>
-			<div class="span6 alignR"><a href="./add-student.php">Add new student</a></div>
-					<div class="span12">
-						<table class="table table-stripted">
-							<thead>
-								<tr>
-									<th>#</th>
-									<th>Student Name</th>
-									<th>Roll NO.</th>
-									<th>Image</th>
-									<th>Batch</th>
-									<th>Mobile</th>
-									<th>Mobile-P</th>
-									<th>Tests</th>
-									<th>More?</th>
-								</tr>
-							</thead>
-							<tbody><tr>
+			$student_list.='<tr>
 									<td>1.</td>
 									<td>'.ucfirst($dbh->select_res['fname']).' '.ucfirst($dbh->select_res['lname']).'</td>
 									<td>'.$dbh->select_res['roll_no'].'</td>
@@ -163,25 +128,6 @@ if(isset($_GET['batch'])){
 					</div>
 				</div>';
 		}else if($dbh->sel_count_row>1){
-			$student_list='<div class="row-fluid">
-					<div class="span6 alignL"><a href="./students.php">Back</a></div>
-					<div class="span6 alignR"><a href="./add-student.php">Add new student</a></div>
-					<div class="span12">
-						<table class="table table-stripped">
-							<thead>
-								<tr>
-									<th>#</th>
-									<th>Student Name</th>
-									<th>Roll NO.</th>
-									<th>Image</th>
-									<th>Batch</th>
-									<th>Mobile</th>
-									<th>Mobile-P</th>
-									<th>Tests</th>
-									<th>More</th>
-								</tr>
-							</thead>
-							<tbody>';
 			$i=0;
 			foreach($dbh->select_res as $student){
 				$i+=1;
@@ -227,7 +173,7 @@ if(isset($_GET['batch'])){
 			}
 		$student_list='<div class="row-fluid">
 				<div class="span6 alignL"><a href="./students.php">Back</a></div>
-		<div class="span6 alignR"><a href="./add-student.php">Add new student</a></div>
+		<div class="span6 alignR"><a href="./add-student.php">Add new student</a> | <a href="./send-rand-sms.php?roll_no='.$_GET['roll_no'].'">Send SMS</a></div>
 				<div class="span12">
 					<table class="table table-stripted">
 						<thead>
@@ -319,7 +265,7 @@ if(isset($_GET['batch'])){
 			}
 		$student_list='<div class="row-fluid">
 				<div class="span6 alignL"><a href="./students.php">Back</a></div>
-		<div class="span6 alignR"><a href="./add-student.php">Add new student</a></div>
+				<div class="span6 alignR"><a href="./add-student.php">Add new student</a> | <a href="./send-rand-sms.php?name='.$_GET['name'].'">Send SMS</a></div>
 				<div class="span12">
 					<table class="table table-stripted">
 						<thead>

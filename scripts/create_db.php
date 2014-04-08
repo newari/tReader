@@ -35,6 +35,10 @@ mysql_query('CREATE TABLE IF NOT EXISTS `config` (
   `odb` varchar(15) NOT NULL,
   `odbu` varchar(15) NOT NULL,
   `odbp` varchar(15) NOT NULL,
+  `sms_url` varchar(100) NOT NULL,
+  `sms_un` varchar(50) NOT NULL,
+  `sms_pas` varchar(50) NOT NULL,
+  `sms_templates` text NOT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1 AUTO_INCREMENT=1 ');
 
