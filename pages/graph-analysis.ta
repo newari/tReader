@@ -1,0 +1,209 @@
+<!doctype html>
+<html>
+    <head>
+        <meta charset=utf-8>
+        <meta name=description content="Student home page.">
+        <meta name=viewport content="width=device-width, initial-scale=1">
+        <title>{$page.title}</title>
+        <link rel=stylesheet href="css/style.css">
+        <link rel=stylesheet href="css/bootstrap.css">
+        <script src="js/jquery-1.9.0.min.js"></script>
+         <script type="text/javascript" src="https://www.google.com/jsapi"></script>
+        <script type="text/javascript">
+          function getRandomnNo (min, max) {
+              return Math.random() * (max - min) + min;
+          }
+          var std_roll_no="{$student.roll_no}";
+          var test_id="{$student.test_id}";
+          var top10data={$student.top10data};
+          // console.log(top10data);
+          // top10data=JSON.parse(top10data);
+          var subData={$student.sub_data};
+          var testData={$student.testdata};
+          // testdata=JSON.parse(testData);
+          //top10data=JSON.parse(top10data);
+          // subData=JSON.parse(subData);
+          var i, qNo, solvedBy, difficultyLevel, meanTime;
+         
+          var chart3Set=new Array();
+          var chart3Seth=new Array();
+          var chart3Setv=new Array();
+          chart3Seth[0]="Test";
+          chart3Setv[0]="01";
+          var i=1;
+          for(var rollNo in top10data) {
+              chart3Seth[i]=top10data[rollNo];
+
+              chart3Setv[i]=parseInt(rollNo);
+              i++;
+          }
+
+          chart3Set=[chart3Seth, chart3Setv];
+          google.load("visualization", "1", {packages:["corechart"]});
+         var sub_scores={$testdata.sub_scores_string};
+          
+          chart2Set=new Array(['Subject', 'Youcr marks']);
+          var i=1;
+         for(var subName in sub_scores){
+            var score =parseInt(sub_scores[subName]);
+            chart2Set[i]=Array(subName, score);
+            i++;
+         }
+
+          function drawChart1() {
+            var chart1Set=new Array(['Solved type', 'No. of questions'], ["Correct", {$testdata.correct}], ["Incorrect", {$testdata.incorrect}], ["Unattemted", {$testdata.unattemted}], ["Wrong Filled", {$testdata.wrongf}]);
+            var data = google.visualization.arrayToDataTable(chart1Set);
+
+            var options = {
+              title: 'Brief data of solved paper:'
+            };
+
+            var chart = new google.visualization.PieChart(document.getElementById('chart1'));
+            chart.draw(data, options);
+          }
+
+
+          function drawChart2() {
+            console.log(chart2Set);
+             var data = google.visualization.arrayToDataTable(chart2Set);
+
+              var options = {
+                title: 'Subject Wise scored marks:'
+              };
+
+              var chart = new google.visualization.PieChart(document.getElementById('chart2'));
+              chart.draw(data, options);
+          }
+
+          
+          function drawChart3() {
+             var data = google.visualization.arrayToDataTable(chart3Set);
+
+            var options = {
+              title: 'Comparision with top 10 students :',
+              hAxis: {title:"Roll No-"},
+              vAxis:{title:"Score"}
+            };
+
+            var chart = new google.visualization.ColumnChart(document.getElementById('chart3'));
+            chart.draw(data, options);
+          }
+         
+
+
+        </script>
+    </head>
+    <body style="background-color:rgb(241, 241, 241)">
+        <!-- <p>{$student.fname} {$student.lname}</p>
+
+        <p>You have registered on {$student.reg_time}</p>
+        <p>Your JEE Mains Papers: </p>
+        <div>{$student.allowed_jmt_test_list}</div> -->
+
+       <div class="navbar navbar-fixed-top">
+          <div class="navbar-inner navbar-omre">
+            <div class="container">
+              <a class="brand" href="./index.php">OMR Evaluation | tReader</a>
+              <div class="nav-collapse collapse pushR">
+                <ul class="nav">
+                  <li class="">
+                    <a href="./index.php">Home</a>
+                  </li>
+                  <li class="">
+                    <a href="./start-new-test.php">New test</a>
+                  </li>
+                  <li class="">
+                    <a href="./all-tests.php">All tests</a>
+                  </li>
+                  
+                  <li class="">
+                    <a href="./students.php">Students</a>
+                  </li>
+                  <li class="">
+                    <a href="scripts/logout.php">Log Out</a>
+                  </li>
+                 
+                </ul>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="header error-box" style="{$page.msg_cls}">
+            <div>
+                <div class="container ">
+                    <p>{$page.msg}</p>
+                </div>
+            </div>
+        </div>
+        <div class="omre-container container well margint50">
+            {$page.main_content}
+            <div class="row-fluid">
+             <div class="span12 marginl0 well">
+                            <div class="row-fluid">
+                                <div class="span5">
+                                    <h4>{$testdata.testname}</h4>
+                                    <p>Tota question: {$testdata.total_qs}</p>
+                                    <p>Math Topic : ---</p>
+                                    <p>Math Topic: ---</p>
+                                    <p>Math Topic: ---</p>
+                                </div>
+                                <div class="span7 well">
+                                     <p>Participated by: {$testdata.total_participants}</p>
+                                     <p>Topper Name: {$testdata.topper_name}</p>
+                                     <p>Topper Marks: {$testdata.topper_marks}</p>
+                                     
+                                     <p><a href="./std-test-report.php?test_id={$student.test_id}&roll_no={$student.roll_no}">Back</a></p>
+                                </div>
+                            </div>
+                        </div>
+              <div class="span12 marginl0">
+                            <div class="row-fluid">
+                                <div class="span12 chart-box-std">
+                                    <div id="chart1" style="width: 700px; height: 300px;"></div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="span12 marginl0">
+                            <div class="row-fluid">
+                                <div class="span12 chart-box-std">
+                                    <div id="chart2" style="width: 700px; height: 300px;"></div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="span12 marginl0">
+                            <div class="row-fluid">
+                                <div class="span12 chart-box-std">
+                                    <div id="chart3" style="width: 700px; height: 300px;"></div>
+                                </div>
+                            </div>
+                        </div>
+            </div>
+        </div>
+        <div class="footer">
+          <div class="container alignC">
+            <div class="row-fluid">
+              <div class="span12">
+                <ul>
+                  <li>Home | </li>
+                  <li>Privacy Policy | </li>
+                  <li>Terms and Conditions | </li>
+                  <li>Help </li>
+                </ul>
+              </div>
+              <div><h6 class="alignC">Powered by <a href="http://pesofts.com" target="new">triaas | PESS</a></h6></div>
+            </div>
+          </div>
+        </div>
+        
+        <script src="js/main.js"></script>
+        <script type="text/javascript">
+            $(document).ready(function(){
+                var h=$(".std-right").height();
+                $(".std-left").height(h);
+                 drawChart1();
+          drawChart2();
+          drawChart3();
+            })
+        </script>
+    </body>
+</html>

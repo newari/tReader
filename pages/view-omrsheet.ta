@@ -1,0 +1,15 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>{$page.title}</title>
+	<link rel=stylesheet href="css/style.css">
+        <link rel=stylesheet href="css/bootstrap.css">
+</head>
+<body>
+	<div class="container">
+		{$page.main_content}
+	</div>
+	<script src="js/jquery-1.9.0.min.js"></script>
+    <script src="js/create-omr.js"></script>
+</body>
+</html>

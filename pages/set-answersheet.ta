@@ -1,0 +1,112 @@
+<!doctype html>
+<html>
+    <head>
+        <meta charset=utf-8>
+        <meta name=description content="Student home page.">
+        <meta name=viewport content="width=device-width, initial-scale=1">
+        <title>Set Answer Sheet | tReader</title>
+        <link rel=stylesheet href="css/style.css">
+        <link rel=stylesheet href="css/bootstrap.css">
+    </head>
+    <body style="background-color:rgb(241, 241, 241)">
+        <!-- <p>{$student.fname} {$student.lname}</p>
+
+        <p>You have registered on {$student.reg_time}</p>
+        <p>Your JEE Mains Papers: </p>
+        <div>{$student.allowed_jmt_test_list}</div> -->
+
+        <div class="navbar navbar-fixed-top">
+          <div class="navbar-inner navbar-omre">
+            <div class="container">
+              <a class="brand" href="./index.php">OMR Evaluation | tReader</a>
+              <div class="nav-collapse collapse pushR">
+                <ul class="nav">
+                  <li class="">
+                    <a href="./index.php">Home</a>
+                  </li>
+                  <li class="">
+                    <a href="./start-new-test.php">New test</a>
+                  </li>
+                  <li class="">
+                    <a href="./all-tests.php">All tests</a>
+                  </li>
+                  
+                  <li class="">
+                    <a href="./students.php">Students</a>
+                  </li>
+                  <li class="">
+                    <a href="scripts/logout.php">Log Out</a>
+                  </li>
+                 
+                </ul>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="header error-box" style="{$page.msg_cls}">
+            <div>
+                <div class="container ">
+
+                    <p>{$page.msg}</p>
+
+
+                
+                </div>
+            </div>
+        </div>
+        <div class="omre-container container well margint50 " id="omrsheet">
+
+            
+            <div class="row-fluid ">
+                <div class="span12 main-div">
+                  <h3 class="alignC">Select your answer sheet's scaned photo:</h3>
+                    <div class="row-fluid">
+                      <div class="span3 offset4">
+                      Test ID:<br/>
+                        <input type="text" id="testId" class="span12"/><br/>
+                        <input type="file" name="omrsheet" id="answersheet"/>
+                       <br/>
+                        <button onclick="startASevaluation()" class="btn btn-success">Start Evaluation</button>
+                      </div>
+                      
+                    </div>
+
+                </div>
+                <div class="span12 hide pv-option alignC">
+              
+            <form action="answersheet-pv.php" method="post">
+              <input type="hidden" id="ansdata" name="ansdata"/>
+              <input type="hidden" id="test_id" name="test_id"/>
+              <input type="submit" value="Check Answers" class="btn btn-warning"/>
+            </form>
+          </div>
+          <div class="span12 alignC load-pv hide">
+           <h4> Loading...</h4>
+          </div>
+              </div>
+            <canvas id="canvas1" width="2500" height="3600">
+          </canvas>
+          
+        </div>
+        <div class="footer">
+          <div class="container alignC">
+            <div class="row-fluid">
+              <div class="span12">
+                <ul>
+                  <li>Home | </li>
+                  <li>Privacy Policy | </li>
+                  <li>Terms and Conditions | </li>
+                  <li>Help </li>
+                </ul>
+              </div>
+              <div><h6 class="alignC">Powered by <a href="http://pesofts.com" target="new">triaas | PESS</a></h6></div>
+            </div>
+          </div>
+        </div>
+        
+        <script src="js/jquery-1.9.0.min.js"></script>
+        <script src="js/omr-ev-default.js"></script>
+
+        
+    </body>
+</html>
